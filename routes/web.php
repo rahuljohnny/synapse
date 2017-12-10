@@ -11,11 +11,40 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 
 
+Route::get('/','FrontController@loginOrRegister');
+
+
 
 Route::get('/front','FrontController@index');
+
+Route::post('/users/loginuser','UserController@postSignIn');
+
+
+Route::middleware(['auth'])->group(function (){
+
+
+
+    Route::get('/logout','UserController@getLogout')->name('logout');
+
+    Route::get('/dashboard','UserController@adminDashboard')->name('dashboard');
+    Route::resource('posts', 'PostController');
+
+    Route::get('/posts/{post}/delete', 'PostController@deletePost');
+
+});
+
+Route::resource('users', 'UserController');
+
+
+
+
