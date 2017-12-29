@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -96,9 +97,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $postUpdated = Post::find($request['id']);
+        $postUpdated->body = $request['body']; //Only these fields will be changed
+        $postUpdated->updated_at = Carbon::now();
+        $postUpdated->save();
+        //return response()->json(['body'=>$postUpdated->body], 200);
+        return $request;
     }
 
     /**

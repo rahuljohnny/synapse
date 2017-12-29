@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,7 +45,13 @@ Route::middleware(['auth'])->group(function (){
 });
 
 Route::resource('users', 'UserController');
+Route::post('/edit', 'PostController@update')->name('edit');
 
 
+/*
+Route::post('/edit',function (Request $request){
+        return $request;
+})->name('edit');
 
+*/
 
