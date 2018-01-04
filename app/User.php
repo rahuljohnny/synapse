@@ -16,6 +16,11 @@ class User extends Model implements Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
+
+
 
     // As I forgot to use remember token, To enable Auth::logout facility, I need to do that
     public function setAttribute($key, $value)
@@ -26,6 +31,8 @@ class User extends Model implements Authenticatable
             parent::setAttribute($key, $value);
         }
     }
+
+
 }
 
 

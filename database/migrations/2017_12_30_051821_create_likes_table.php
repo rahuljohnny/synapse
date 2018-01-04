@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRememberTokenToUsersTable extends Migration
+
+
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +15,12 @@ class AddRememberTokenToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::create('likes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+            $table->integer('user_id');
+            $table->integer('post_id');
+            $table->tinyInteger('like');
         });
     }
 
@@ -25,10 +31,6 @@ class AddRememberTokenToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('likes');
     }
 }
-
-

@@ -41,7 +41,8 @@ Route::middleware(['auth'])->group(function (){
     Route::resource('posts', 'PostController');
 
     Route::get('/posts/{post}/delete', 'PostController@deletePost');
-
+    Route::post('/like', 'PostController@likeDislikePost')->name('like');
+    Route::post('/lite', 'PostController@onlyToPassTwoVariable')->name('lite');
 });
 
 Route::resource('users', 'UserController');

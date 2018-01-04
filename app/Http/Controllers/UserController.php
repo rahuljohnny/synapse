@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Like;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
@@ -32,7 +33,11 @@ class UserController extends Controller
 
     public function adminDashboard()
     {
+        $countLikes = Like::where('like', 1)->count();
+
+
         $posts = Post::ordered();
+
         return view('user.dashboard',compact('posts'));
     }
 

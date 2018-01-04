@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Like;
 use App\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -79,15 +81,69 @@ class PostController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function likeDislikePost(Request $request)
     {
-        //
+        //return $request;
+        $post_id = $request['postID'];
+
+        if(!$request['isLike']){
+            $isLike = 0;
+        }
+        else if($request['isLike']){
+            $isLike = 1;
+        }
+        //return $isLike;
+
+        $user = Auth::user();
+
+        //If this post already has got a like/dislike by this user
+        $like = $user->likes()->where('post_id',$post_id)->first();
+
+
+        //return $like;
+
+        if($like){//if this post_id is already in like table
+            $storedLikeVal = $like->like;
+            //return $storedLikeVal;
+            if($isLike == $storedLikeVal){ //If it's a like/un in DB and again the like/un button is pressed
+                $like->delete();
+                return $like;
+                //return "Deleted";
+            }
+            else{
+                $likeToUpdate = $user->likes()->where('post_id','=',$post_id)
+                                ->update(
+                                    ["like" => $isLike]
+                                );
+                $updatedLike = $user->likes()->where('post_id','=',$post_id)->first();
+
+                return $updatedLike;
+                //return "Updated liked / Unliked!";
+
+            }
+        }
+        else{
+            $like = new Like;
+            $like->like = $isLike;
+            $like->user_id = $user->id;
+            $like->post_id = $post_id;
+            $like->save();
+            return $like;
+
+            //return "completely newly liked/Unliked";
+        }
+
+        //echo $storedLikeVal;
+
+        //return $like;
+    }
+
+    public function onlyToPassTwoVariable(Request $request)
+    {
+        $likedStatus1 = $request['likedStatus'];
+        $unlikedStatus1 = $request['unlikedStatus'];
+        view('user.dashboard',compact('likedStatus1', 'unlikedStatus1'));
+        return $request;
     }
 
     /**
